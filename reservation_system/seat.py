@@ -1,7 +1,7 @@
 import pickle
 
 class Seat:
-    def check_flight_existence(self, flight_no):
+    def check_flight_existence(self, flight_number):
         with open('storage/flights.dat', 'rb') as f:
             try:
                 data = pickle.load(f)
@@ -9,9 +9,10 @@ class Seat:
                 return False
             else:
                 for item in data:
-                    if flight_no in item['Flight Number']:
+                    if flight_number == item.get('Flight Number'):
                         return True
-            return False
+                return False
+
         
     def add_seat(self, flight_number, seat, seat_type):
         if self.check_flight_existence(flight_number):
