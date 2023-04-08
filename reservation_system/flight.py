@@ -2,7 +2,7 @@ import pandas as pd
 import pickle
 
 class Flight:
-    def check_duplicate_flight(self, flight_no):
+    def check_duplicate_flight(self, flight_number):
         with open('storage/flights.dat', 'rb') as f:
             try:
                 data = pickle.load(f)
@@ -10,9 +10,10 @@ class Flight:
                 return True
             else:
                 for item in data:
-                    if flight_no in item['Flight No']:
+                    if 'Flight Number' in item and flight_number in item['Flight Number']:
                         return False
             return True
+
 
     def search_flights(self, departure_location, arrival_location):
         found = []
@@ -37,8 +38,8 @@ class Flight:
             print(df)
             print('\n')
             
-    def create_flight(self, flight_no, flight_name, departure_location, arrival_location, scheduled_departure, scheduled_arrival):
-        if self.check_duplicate_flight(flight_no):
+    def create_flight(self, flight_number, flight_name, departure_location, arrival_location, scheduled_departure, scheduled_arrival):
+        if self.check_duplicate_flight(flight_number):
             with open('storage/flights.dat', 'rb') as f:
                 try:
                     data = pickle.load(f)
@@ -47,7 +48,7 @@ class Flight:
                     
             data.append(
                 {
-                    'Flight No.': flight_no,
+                    'Flight Number': flight_number,
                     'Airline Name': flight_name,
                     'Departure Location': departure_location,
                     'Arrival Location': arrival_location,
@@ -61,8 +62,8 @@ class Flight:
         else:
             print('Flight no. must be unique.')
             
-    def update_flight(self, old_flight_no, flight_no, flight_name, departure_location, arrival_location, scheduled_departure, scheduled_arrival):
-        if self.check_duplicate_flight(flight_no):
+    def update_flight(self, old_flight_number, flight_number, flight_name, departure_location, arrival_location, scheduled_departure, scheduled_arrival):
+        if self.check_duplicate_flight(flight_number):
             with open('storage/flights.dat', 'rb') as f:
                 try:
                     data = pickle.load(f)
@@ -70,8 +71,8 @@ class Flight:
                     data = []
                     
             for item in data:
-                if old_flight_no in item['Flight No.']: 
-                    item['Flight No.'] = flight_no
+                if old_flight_number in item['Flight No.']: 
+                    item['Flight Number'] = flight_number
                     item['Flight Name'] = flight_name,
                     item['Departure Location'] = departure_location,
                     item['Arrival Location'] = arrival_location,
@@ -85,13 +86,13 @@ class Flight:
         else:
             print('Flight no. must be unique.')  
 
-    def detail_flight(self, flight_no):
+    def detail_flight(self, flight_number):
         with open('storage/flights.dat', 'rb') as f:
             data = pickle.load(f)
         
         found = False
         for item in data:
-            if item['Flight No.'] == flight_no:
+            if 'Flight Number' in item and item['Flight Number'] == flight_number:
                 found = True
                 df = pd.DataFrame([item])
                 print(df)
@@ -99,17 +100,18 @@ class Flight:
                 print('\n Seats:\n')
                 with open('storage/seats.dat', 'rb') as f:
                     data = pickle.load(f)
-                    if flight_no in data:
-                        for seat in data[flight_no]['Seats']:
+                    if flight_number in data:
+                        for seat in data[flight_number]['Seats']:
                             print('\n')
                             for key, value in seat.items():
                                 print('{} : {}'.format(key, value))
                 break
         
         if not found:
-            print('Flight not found.')           
+            print('Flight not found.')
+           
                    
-    def delete_flight(self, old_flight_no: str) -> None:
+    def delete_flight(self, old_flight_number: str) -> None:
         with open('storage/flights.dat', 'rb') as f:
             try:
                 data = pickle.load(f)
@@ -117,7 +119,7 @@ class Flight:
                 data = []
                 
         for item in data:
-            if old_flight_no in item['Flight No.']: 
+            if old_flight_number in item['Flight No.']: 
                 del item
             else:
                 print('Flight does not exist.')

@@ -20,18 +20,18 @@ class Client:
 
     def flight_main(self):
         choose = input('choose : ')
-        if choose == 'A':
+        if choose == 'S':
             self.flight_search()
-        elif choose == 'B':
+        elif choose == 'D':
             self.detail_flight()
-        elif choose == 'R':
+        elif choose == 'B':
             self.ready()
 
     def flight_search(self):
         departure_location = input('Enter departure location : ')
         arrival_location = input('Enter arrival location : ')
         flight = Flight()
-        flight.search(departure_location, arrival_location)
+        flight.search_flights(departure_location, arrival_location)
 
     def detail_flight(self):
         flight_number = input('Enter flight number : ')
@@ -97,7 +97,7 @@ class Staff:
         elif choose == 'D':
             self.delete_flight()
         elif choose == 'S':
-            self.search_flights()
+            self.flight_search()
         elif choose == 'V':
             self.detail_flight()
         elif choose == 'B':
@@ -154,7 +154,6 @@ class Staff:
         print('Enter U to update a reservation.')
         print('Enter D to delete a reservation.')
         print('Enter S to search a reservation.')
-        print('Enter V to view reservation details.')
         print('Enter B to go back.')
         
         choose = input('\nchoose : ')
@@ -189,11 +188,11 @@ class Staff:
         reservation.create_reservation(flight_number, customer_id, seat_number, arrival_date)
         
     def update_reservation(self):
-        id = input('Enter reservation ID')
+        id = input('Enter reservation ID:')
         flight_number = input('Enter flight number : ')
         customer_id = input('Enter customer ID : ')
         seat_number = input('Enter seat number : ')
-        arrival_date = input('Enter arrival date (MM-DD-YYYY) : ')
+        arrival_date = input('Enter arrival date (YYYY-MM-DD) : ')
         reservation = Reservation()
         reservation.update_reservation(id, flight_number, customer_id, seat_number, arrival_date)
         
@@ -277,7 +276,7 @@ class Staff:
         choose = input('choose : ')
         if choose == 'C':
             self.create_seat()
-        elif choose == 'e':
+        elif choose == 'E':
             self.end()
             
         if self.run:
